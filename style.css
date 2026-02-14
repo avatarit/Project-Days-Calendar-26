@@ -1,0 +1,19 @@
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    max-width: 600px;
+  }
+  
+  .day {
+    border: 1px solid #ccc;
+    padding: 10px;
+    min-height: 60px;
+    font-size: 14px;
+  }
+  
+  .special {
+    background-color: #ffeeba;
+    font-weight: bold;
+  }
+  
