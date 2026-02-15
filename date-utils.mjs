@@ -17,3 +17,29 @@ export function weekdayNameToIndex(dayName) {
     return days.indexOf(dayName);
 }
 
+export function getOccurrenceDate(year, monthIndex, weekdayIndex, occurrence) {
+const firstOfMonth = new Date(year, monthIndex, 1);
+const firstWeekDay = firstOfMonth.getDay();
+
+let offset = weekdayIndex - firstWeekDay;
+if (offset < 0) offset += 7;
+
+let day = 1 + offset;
+
+if (occurrence === "second") day += 7;
+if (occurrence === "third") day += 14;
+
+if (occurrence === "last") {
+    const lastDayOfMonth = new Date(year, monthIndex + 1, 0).getDate();
+    const lastDate = new Date(year, monthIndex, lastDayOfMonth);
+    const lastWeekday = lastDate.getDay();
+
+    let backwardOffset = lastWeekday - weekdayIndex;
+    if (backwardOffset < 0) backwardOffset += 7;
+
+    day = lastDayOfMonth - backwardOffset;
+}
+
+return day;
+
+}
