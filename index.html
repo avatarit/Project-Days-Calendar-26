@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Days Calendar</title>
   <link rel="stylesheet" href="style.css" />
   <script type="module" src="web.mjs" defer></script>
@@ -10,12 +11,22 @@
 
   <h1 id="month-title"></h1>
 
-  <div id="calendar"></div>
+  <button id="prev" type="button" aria-label="Previous month">Previous</button>
 
-  <div>
-    <button id="prev" aria-label="Previous month">Previous</button>
-<button id="next" aria-label="Next month">Next</button>
-  </div>
+  <label>
+    Month
+    <select id="month-select"></select>
+  </label>
+
+  <label>
+    Year
+    <select id="year-select"></select>
+  </label>
+
+
+  <button id="next" type="button" aria-label="Next month">Next</button>
+
+  <div id="calendar"></div>
 
 </body>
 </html>
