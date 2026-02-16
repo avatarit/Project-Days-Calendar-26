@@ -1,4 +1,5 @@
 import daysData from "./days.json" with { type: "json" };
+import { getCommemorativeDate } from "./date-utils.mjs"; // change to "./common.mjs" if that's where your function is
 
 const nextButton = document.getElementById("next");
 const prevButton = document.getElementById("prev");
@@ -14,6 +15,8 @@ const monthNames = [
   "January","February","March","April","May","June",
   "July","August","September","October","November","December"
 ];
+
+// -------------------- Dropdown setup --------------------
 
 function setupJumpControls() {
   // months
@@ -39,33 +42,59 @@ function setupJumpControls() {
   yearSelect.value = String(currentYear);
 }
 
+// -------------------- Commemorative days --------------------
+
+function getEventsForMonth(year, monthIndex) {
+  const eventsByDay = {};
+
+  for (const item of daysData) {
+    const date = getCommemorativeDate(year, item);
+    if (!date) continue;
+
+    if (date.getUTCFullYear() === year && date.getUTCMonth() === monthIndex) {
+      const dayNumber = date.getUTCDate();
+
+      if (!eventsByDay[dayNumber]) eventsByDay[dayNumber] = [];
+      eventsByDay[dayNumber].push(item.name);
+    }
+  }
+
+  return eventsByDay;
+}
+
+// -------------------- Render calendar --------------------
+
 function renderMonth(year, monthIndex) {
+  // Clear old calendar
   calendarEl.innerHTML = "";
 
   // Title
   const monthName = new Date(year, monthIndex, 1).toLocaleString("en-GB", { month: "long" });
   titleEl.textContent = `${monthName} ${year}`;
 
-  // keep dropdowns in sync
+  // Keep dropdowns in sync
   monthSelect.value = String(monthIndex);
   yearSelect.value = String(year);
 
   // Weekday headers (Sunday-first)
   const headers = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-  for (let h of headers) {
+  for (const h of headers) {
     const cell = document.createElement("div");
     cell.className = "day header";
     cell.textContent = h;
     calendarEl.appendChild(cell);
   }
 
-  // First day weekday
+  // First day weekday (0-6)
   const startWeekday = new Date(year, monthIndex, 1).getDay();
 
   // Days in month
   const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
 
-  // Padding
+  // Build events map for this month
+  const eventsByDay = getEventsForMonth(year, monthIndex);
+
+  // Padding before day 1
   for (let i = 0; i < startWeekday; i++) {
     const empty = document.createElement("div");
     empty.className = "day empty";
@@ -78,13 +107,24 @@ function renderMonth(year, monthIndex) {
     cell.className = "day";
     cell.textContent = day;
 
-    // (Later) we will use daysData here to mark commemorative days
+    // Highlight + list events (supports multiple per day)
+    if (eventsByDay[day]) {
+      cell.classList.add("special");
+
+      for (const eventName of eventsByDay[day]) {
+        const label = document.createElement("div");
+        label.className = "event-label";
+        label.textContent = eventName;
+        cell.appendChild(label);
+      }
+    }
 
     calendarEl.appendChild(cell);
   }
 }
 
-// Button events
+// -------------------- Navigation --------------------
+
 nextButton.addEventListener("click", () => {
   currentMonth++;
   if (currentMonth > 11) {
@@ -113,8 +153,7 @@ yearSelect.addEventListener("change", () => {
   renderMonth(currentYear, currentMonth);
 });
 
+// -------------------- Start --------------------
 
-
-// Start
 setupJumpControls();
 renderMonth(currentYear, currentMonth);

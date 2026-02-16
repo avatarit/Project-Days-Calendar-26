@@ -43,11 +43,11 @@ if (occurrence === "last") {
 return day;
 }
 
-export function getCommemorativeDate(dayEntry, year) {
+export function getCommemorativeDate(year, dayEntry) {
     const monthIndex = monthNameToIndex(dayEntry.monthName);
     const weekdayIndex = weekdayNameToIndex(dayEntry.dayName);
-    
-const day = getOccurrenceDate(year, monthIndex, weekdayIndex, dayEntry.occurrence);
-
-return new Date(year, monthIndex, day);
-}
+  
+    const day = getOccurrenceDate(year, monthIndex, weekdayIndex, dayEntry.occurrence);
+  
+    return new Date(year, monthIndex, day);
+  }
