@@ -49,5 +49,5 @@ export function getCommemorativeDate(year, dayEntry) {
   
     const day = getOccurrenceDate(year, monthIndex, weekdayIndex, dayEntry.occurrence);
   
-    return new Date(year, monthIndex, day);
+    return new Date(Date.UTC(year, monthIndex, day));
   }

@@ -121,6 +121,14 @@ function renderMonth(year, monthIndex) {
 
     calendarEl.appendChild(cell);
   }
+  let totalDaysShown = startWeekday + daysInMonth;
+
+  while (totalDaysShown % 7 !== 0) {
+  const empty = document.createElement("div");
+  empty.className = "day empty";
+  calendarEl.appendChild(empty);
+  totalDaysShown++;
+}
 }
 
 // -------------------- Navigation --------------------
