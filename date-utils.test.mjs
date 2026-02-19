@@ -5,11 +5,9 @@ import path from "path";
 
 import { getCommemorativeDate } from "./date-utils.mjs";
 
-// Read days.json
 const __dirname = path.resolve();
 const daysData = JSON.parse(fs.readFileSync(path.join(__dirname, "days.json"), "utf-8"));
 
-// Test Ada Lovelace Day
 test("Ada Lovelace Day 2024 is Oct 8 (UTC)", () => {
     const ada = getCommemorativeDate(2024, daysData[0]);
     assert.strictEqual(ada.getUTCFullYear(), 2024);
@@ -24,4 +22,3 @@ test("World Lemur Day 2024 is Oct 25 (UTC)", () => {
     assert.strictEqual(lemur.getUTCMonth(), 9);
     assert.strictEqual(lemur.getUTCDate(), 25);
   });
->>>>>>> 3d48280ef785f509c763afc9e650076a18050b73
