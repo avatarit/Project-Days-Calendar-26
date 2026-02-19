@@ -1,5 +1,5 @@
 import daysData from "./days.json" with { type: "json" };
-import { getCommemorativeDate } from "./date-utils.mjs"; // change to "./common.mjs" if that's where your function is
+import { getCommemorativeDate } from "./date-utils.mjs"; 
 
 const nextButton = document.getElementById("next");
 const prevButton = document.getElementById("prev");
@@ -9,17 +9,15 @@ const calendarEl = document.getElementById("calendar");
 const titleEl = document.getElementById("month-title");
 
 let currentYear = new Date().getFullYear();
-let currentMonth = new Date().getMonth(); // 0-11
+let currentMonth = new Date().getMonth(); 
 
 const monthNames = [
   "January","February","March","April","May","June",
   "July","August","September","October","November","December"
 ];
 
-// -------------------- Dropdown setup --------------------
 
 function setupJumpControls() {
-  // months
   monthSelect.innerHTML = "";
   for (let i = 0; i < 12; i++) {
     const opt = document.createElement("option");
@@ -28,7 +26,6 @@ function setupJumpControls() {
     monthSelect.appendChild(opt);
   }
 
-  // years
   yearSelect.innerHTML = "";
   for (let y = 2015; y <= 2040; y++) {
     const opt = document.createElement("option");
@@ -37,12 +34,10 @@ function setupJumpControls() {
     yearSelect.appendChild(opt);
   }
 
-  // set current values
   monthSelect.value = String(currentMonth);
   yearSelect.value = String(currentYear);
 }
 
-// -------------------- Commemorative days --------------------
 
 function getEventsForMonth(year, monthIndex) {
   const eventsByDay = {};
@@ -62,21 +57,16 @@ function getEventsForMonth(year, monthIndex) {
   return eventsByDay;
 }
 
-// -------------------- Render calendar --------------------
 
 function renderMonth(year, monthIndex) {
-  // Clear old calendar
   calendarEl.innerHTML = "";
 
-  // Title
   const monthName = new Date(year, monthIndex, 1).toLocaleString("en-GB", { month: "long" });
   titleEl.textContent = `${monthName} ${year}`;
 
-  // Keep dropdowns in sync
   monthSelect.value = String(monthIndex);
   yearSelect.value = String(year);
 
-  // Weekday headers (Sunday-first)
   const headers = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
   for (const h of headers) {
     const cell = document.createElement("div");
@@ -85,29 +75,23 @@ function renderMonth(year, monthIndex) {
     calendarEl.appendChild(cell);
   }
 
-  // First day weekday (0-6)
   const startWeekday = new Date(year, monthIndex, 1).getDay();
 
-  // Days in month
   const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
 
-  // Build events map for this month
   const eventsByDay = getEventsForMonth(year, monthIndex);
 
-  // Padding before day 1
   for (let i = 0; i < startWeekday; i++) {
     const empty = document.createElement("div");
     empty.className = "day empty";
     calendarEl.appendChild(empty);
   }
 
-  // Actual days
   for (let day = 1; day <= daysInMonth; day++) {
     const cell = document.createElement("div");
     cell.className = "day";
     cell.textContent = day;
 
-    // Highlight + list events (supports multiple per day)
     if (eventsByDay[day]) {
       cell.classList.add("special");
 
@@ -121,9 +105,16 @@ function renderMonth(year, monthIndex) {
 
     calendarEl.appendChild(cell);
   }
+  let totalDaysShown = startWeekday + daysInMonth;
+
+  while (totalDaysShown % 7 !== 0) {
+  const empty = document.createElement("div");
+  empty.className = "day empty";
+  calendarEl.appendChild(empty);
+  totalDaysShown++;
+}
 }
 
-// -------------------- Navigation --------------------
 
 nextButton.addEventListener("click", () => {
   currentMonth++;
@@ -153,7 +144,6 @@ yearSelect.addEventListener("change", () => {
   renderMonth(currentYear, currentMonth);
 });
 
-// -------------------- Start --------------------
 
 setupJumpControls();
 renderMonth(currentYear, currentMonth);
