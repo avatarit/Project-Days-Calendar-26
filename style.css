@@ -19,8 +19,7 @@
 }
 
 .empty {
-  border: none;
-  background: transparent;
+  background: #e1e1e1;
 }
 
 .special {
