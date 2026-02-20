@@ -27,7 +27,7 @@ function setupJumpControls() {
   }
 
   yearSelect.innerHTML = "";
-  for (let y = 2015; y <= 2040; y++) {
+  for (let y = 1900; y <= 2050; y++) {
     const opt = document.createElement("option");
     opt.value = String(y);
     opt.textContent = String(y);
